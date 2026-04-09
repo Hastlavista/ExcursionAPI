@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:/Users/Silvio/AppData/Local/Programs/Rider/lib/ReSharperHost/windows-x64/dotnet/dotnet.exe\" --list-sdks)"
+    ]
+  }
+}
