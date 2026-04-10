@@ -13,3 +13,4 @@ C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Infrastr
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Infrastructure\obj\Debug\net10.0\refint\BlueDragon.Excursion.Infrastructure.dll
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Infrastructure\obj\Debug\net10.0\BlueDragon.Excursion.Infrastructure.pdb
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Infrastructure\obj\Debug\net10.0\ref\BlueDragon.Excursion.Infrastructure.dll
+C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Infrastructure\obj\Debug\net10.0\BlueDragon.Excursion.Infrastructure.sourcelink.json

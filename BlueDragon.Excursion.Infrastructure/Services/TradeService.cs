@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlueDragon.Excursion.Core.DTOs.Requests;
 using BlueDragon.Excursion.Core.DTOs.Trades;
 using BlueDragon.Excursion.Core.Interfaces;
 using BlueDragon.Excursion.Infrastructure.Domain.Models;
@@ -48,5 +49,10 @@ public class TradeService : ITradeService
     {
         Trade trade = update.ToDomain();
         await _tradeHandler.UpdateTrade(trade);
+    }
+
+    public async Task UpdateScreenshots(UpdateScreenshotsRequest request, Guid userId)
+    {
+        await _tradeHandler.UpdateScreenshot(request.Id.GetValueOrDefault(), request.ScreenshotBefore, request.ScreenshotAfter, userId);
     }
 }

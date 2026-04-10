@@ -10,3 +10,4 @@ C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Core\obj
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Core\obj\Debug\net10.0\refint\BlueDragon.Excursion.Core.dll
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Core\obj\Debug\net10.0\BlueDragon.Excursion.Core.pdb
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Core\obj\Debug\net10.0\ref\BlueDragon.Excursion.Core.dll
+C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Core\obj\Debug\net10.0\BlueDragon.Excursion.Core.sourcelink.json

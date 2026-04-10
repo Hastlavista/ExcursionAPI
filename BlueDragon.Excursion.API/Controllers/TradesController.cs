@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using BlueDragon.Excursion.Core.DTOs.Requests;
 using BlueDragon.Excursion.Core.DTOs.Trades;
 using BlueDragon.Excursion.Core.Interfaces;
 using BlueDragon.Excursion.Core.Shared;
@@ -70,6 +71,19 @@ public class TradesController : Controller
     {
         List<TradeBaseDto> trades = await _tradeService.GetTrades(User.GetUserId());
         return Ok(trades);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public async Task<IActionResult> UpdateScreenshots([FromBody] UpdateScreenshotsRequest request)
+    {
+        if (!ModelState.IsValid || request.Id == null)
+            return BadRequest("model-invalid");
+
+        await _tradeService.UpdateScreenshots(request, User.GetUserId());
+        return Ok("Screenshot successfully updated!");
     }
 
     [HttpPost]

@@ -50,7 +50,9 @@ public class TradeHandler : ITradeHandler
         Trade existing = context.Trades.SingleOrDefault(t => update.ExternalId != null ? t.ExternalId == update.ExternalId : t.Id == update.Id);
         if (existing == null)
             throw new ArgumentException($"Trade with id {update.Id} / external id {update.ExternalId} does not exist");
-
+        
+        existing.ExitPrice = update.ExitPrice;
+        existing.ExitTime = update.ExitTime;
         existing.TakeProfit = update.TakeProfit;
         existing.StopLoss = update.StopLoss;
         existing.UpdatedAt = DateTimeOffset.UtcNow;
@@ -83,6 +85,22 @@ public class TradeHandler : ITradeHandler
 
         if (existing.EntryTime.HasValue && existing.ExitTime.HasValue)
             existing.DurationMinutes = (int)(existing.ExitTime.Value - existing.EntryTime.Value).TotalMinutes;
+
+        context.Trades.Update(existing);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task UpdateScreenshot(Guid tradeId, string screenshotBefore, string screenshotAfter, Guid userId)
+    {
+        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
+        Trade existing = context.Trades.SingleOrDefault(t => t.Id == tradeId && t.UserId == userId);
+        if (existing == null)
+            throw new ArgumentException($"Trade with id {tradeId} does not exist");
+
+        existing.ChartData ??= new ChartData();
+        existing.ChartData.ScreenshotUrlBefore = screenshotBefore ?? existing.ChartData.ScreenshotUrlBefore;
+        existing.ChartData.ScreenshotUrlAfter = screenshotAfter ?? existing.ChartData.ScreenshotUrlAfter;
+        existing.UpdatedAt = DateTimeOffset.UtcNow;
 
         context.Trades.Update(existing);
         await context.SaveChangesAsync();
