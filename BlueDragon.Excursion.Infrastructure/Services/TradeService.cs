@@ -55,4 +55,9 @@ public class TradeService : ITradeService
     {
         await _tradeHandler.UpdateScreenshot(request.Id.GetValueOrDefault(), request.ScreenshotBefore, request.ScreenshotAfter, userId);
     }
+
+    public async Task DeleteTrade(Guid id, Guid userId)
+    {
+        await _tradeHandler.DeleteTrade(id, userId);
+    }
 }

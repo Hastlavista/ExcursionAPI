@@ -105,4 +105,15 @@ public class TradeHandler : ITradeHandler
         context.Trades.Update(existing);
         await context.SaveChangesAsync();
     }
+
+    public async Task DeleteTrade(Guid id, Guid userId)
+    {
+        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
+        Trade existing = context.Trades.SingleOrDefault(t => t.Id == id && t.UserId == userId);
+        if (existing == null)
+            throw new ArgumentException($"Trade with id {id} does not exist");
+
+        context.Trades.Remove(existing);
+        await context.SaveChangesAsync();
+    }
 }

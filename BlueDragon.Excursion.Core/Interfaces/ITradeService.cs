@@ -14,4 +14,5 @@ public interface ITradeService
     Task<TradeDto> GetTrade(Guid id, Guid userId);
     Task UpdateTrade(TradeDto update);
     Task UpdateScreenshots(UpdateScreenshotsRequest request, Guid userId);
+    Task DeleteTrade(Guid id, Guid userId);
 }

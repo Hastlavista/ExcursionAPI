@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using BlueDragon.Excursion.Infrastructure.Domain.Models;
 
@@ -9,4 +10,8 @@ public interface IAuthHandler
     Task AddUser(User user);
     Task<User> GetUserByCredentials(string email, string passwordHash);
     Task<User> GetUserByApiKey(string apiKey);
+    Task<User> GetUserById(Guid userId);
+    Task UpdateApiKey(Guid userId, string apiKey);
+    Task UpdatePasswordHash(Guid userId, string passwordHash);
+    Task DeleteUserWithTrades(Guid userId);
 }

@@ -90,6 +90,7 @@ public class Startup
 
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ITradeService, TradeService>();
 
         #endregion

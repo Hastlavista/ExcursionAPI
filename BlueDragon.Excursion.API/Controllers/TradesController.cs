@@ -94,11 +94,21 @@ public class TradesController : Controller
     {
         if (!ModelState.IsValid || request.Id == null)
             return BadRequest("model-invalid");
-        
+
         TradeDto trade = await _tradeService.GetTrade(request.Id.GetValueOrDefault(), User.GetUserId());
         if (trade == null)
             return NotFound();
 
         return Ok(trade);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public async Task<IActionResult> DeleteTrade([FromBody] GuidIdRequest request)
+    {
+        await _tradeService.DeleteTrade(request.Id.GetValueOrDefault(), User.GetUserId());
+        return Ok("trade-deleted-successfully");
     }
 }

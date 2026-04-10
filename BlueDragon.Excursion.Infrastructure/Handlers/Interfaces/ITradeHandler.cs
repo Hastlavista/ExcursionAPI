@@ -13,4 +13,5 @@ public interface ITradeHandler
     Task UpdateTrade(Trade update);
     Task CloseTrade(Trade update);
     Task UpdateScreenshot(Guid tradeId, string screenshotBefore, string screenshotAfter, Guid userId);
+    Task DeleteTrade(Guid id, Guid userId);
 }
