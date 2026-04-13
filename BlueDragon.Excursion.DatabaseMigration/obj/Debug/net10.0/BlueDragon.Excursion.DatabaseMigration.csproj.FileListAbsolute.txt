@@ -213,3 +213,4 @@ C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.Database
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.DatabaseMigration\bin\Debug\net10.0\TestConn.exe
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.DatabaseMigration\bin\Debug\net10.0\TestConn.runtimeconfig.json
 C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.DatabaseMigration\bin\Debug\net10.0\IBM.Data.Db2.dll
+C:\Users\Silvio\RiderProjects\BlueDragon.Excursion\BlueDragon.Excursion.DatabaseMigration\obj\Debug\net10.0\BlueDragon.Excursion.DatabaseMigration.sourcelink.json

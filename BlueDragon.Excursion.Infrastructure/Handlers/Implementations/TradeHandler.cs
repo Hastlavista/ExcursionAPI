@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlueDragon.Excursion.Core.Enums;
+using BlueDragon.Excursion.Core.Shared;
 using BlueDragon.Excursion.Infrastructure.Domain.Contexts;
 using BlueDragon.Excursion.Infrastructure.Domain.Models;
 using BlueDragon.Excursion.Infrastructure.Domain.Settings;
@@ -23,12 +24,28 @@ public class TradeHandler : ITradeHandler
 
     public async Task AddTrade(Trade trade)
     {
+        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
+
+        User user = await context.Users.SingleOrDefaultAsync(u => u.Id == trade.UserId);
+
+        DateTimeOffset today = DateTimeOffset.UtcNow;
+        if (user.TradesResetDate.Year != today.Year || user.TradesResetDate.Month != today.Month)
+        {
+            user.TradesThisMonth = 0;
+            user.TradesResetDate = today;
+        }
+
+        if (user.IsPro != true && user.TradesThisMonth >= 25)
+            throw new TradeLimitExceededException();
+
+        user.TradesThisMonth++;
+        context.Users.Update(user);
+
         DateTimeOffset now = DateTimeOffset.UtcNow;
         trade.CreatedAt = now;
         trade.UpdatedAt = now;
-        
-        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
         context.Trades.Add(trade);
+
         await context.SaveChangesAsync();
     }
 

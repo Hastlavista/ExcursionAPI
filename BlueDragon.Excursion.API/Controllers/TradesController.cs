@@ -10,6 +10,7 @@ using BlueDragon.Excursion.Core.Shared;
 using BlueDragon.Excursion.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace BlueDragon.Excursion.API.Controllers;
 
@@ -26,16 +27,24 @@ public class TradesController : Controller
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status402PaymentRequired)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public async Task<IActionResult> OpenTrade([FromBody] TradeDto trade)
     {
         if (!ModelState.IsValid)
             return BadRequest("model-invalid");
 
-        await _tradeService.OpenTrade(trade, User.GetUserId());
-        return Ok("trade-saved-successfully");
+        try
+        {
+            await _tradeService.OpenTrade(trade, User.GetUserId());
+            return Ok("trade-saved-successfully");
+        }
+        catch (TradeLimitExceededException ex)
+        {
+            return StatusCode(StatusCodes.Status402PaymentRequired, ex.Message);
+        }
     }
 
     [HttpPost]

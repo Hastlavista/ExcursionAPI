@@ -19,8 +19,8 @@ public class TradeBaseDto
     public decimal? Mae { get; set; }
     public decimal? Mfe { get; set; }
     public decimal? Efficiency { get; set; }
-    public DateTime? EntryTime { get; set; }
-    public DateTime? ExitTime { get; set; }
+    public DateTimeOffset? EntryTime { get; set; }
+    public DateTimeOffset? ExitTime { get; set; }
     public int? DurationMinutes { get; set; }
     public TradeStatus? Status { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }

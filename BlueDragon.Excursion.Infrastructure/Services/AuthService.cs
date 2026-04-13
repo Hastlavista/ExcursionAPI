@@ -35,7 +35,7 @@ public class AuthService : IAuthService
         user.PasswordHash = HashPassword(request.Password);
         user.ApiKey = Guid.NewGuid().ToString("N");
         user.IsPro = false;
-        user.CreatedAt = DateTime.UtcNow;
+        user.CreatedAt = DateTimeOffset.UtcNow;
 
         await _authHandler.AddUser(user);
 

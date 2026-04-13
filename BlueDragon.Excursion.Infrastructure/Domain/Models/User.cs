@@ -24,6 +24,12 @@ public class User
     [Column("is_pro")]
     public bool? IsPro { get; set; }
 
+    [Column("trades_this_month")]
+    public int TradesThisMonth { get; set; }
+
+    [Column("trades_reset_date")]
+    public DateTimeOffset TradesResetDate { get; set; }
+
     [Column("created_at")]
-    public DateTime? CreatedAt { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
 }

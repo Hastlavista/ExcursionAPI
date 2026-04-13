@@ -9,4 +9,5 @@ public interface IAccountService
     Task<AuthResponse> RegenerateApiKey(Guid userId);
     Task<bool> ChangePassword(Guid userId, ChangePasswordRequest request);
     Task DeleteAccount(Guid userId);
+    Task<PlanResponse> GetPlan(Guid userId);
 }

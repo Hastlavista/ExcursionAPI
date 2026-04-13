@@ -50,4 +50,12 @@ public class AccountController : Controller
         await _accountService.DeleteAccount(User.GetUserId());
         return Ok();
     }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(PlanResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetPlan()
+    {
+        PlanResponse plan = await _accountService.GetPlan(User.GetUserId());
+        return Ok(plan);
+    }
 }

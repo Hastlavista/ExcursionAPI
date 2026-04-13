@@ -57,10 +57,10 @@ public class Trade
     public decimal? Efficiency { get; set; }
 
     [Column("entry_time")]
-    public DateTime? EntryTime { get; set; }
+    public DateTimeOffset? EntryTime { get; set; }
 
     [Column("exit_time")]
-    public DateTime? ExitTime { get; set; }
+    public DateTimeOffset? ExitTime { get; set; }
 
     [Column("duration_minutes")]
     public int? DurationMinutes { get; set; }

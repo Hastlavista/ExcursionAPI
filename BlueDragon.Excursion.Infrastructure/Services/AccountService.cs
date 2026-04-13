@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlueDragon.Excursion.Core.DTOs.Auth;
 using BlueDragon.Excursion.Core.Interfaces;
+using BlueDragon.Excursion.Core.Interfaces;
 using BlueDragon.Excursion.Infrastructure.Domain.Models;
 using BlueDragon.Excursion.Infrastructure.Domain.Settings;
 using BlueDragon.Excursion.Infrastructure.Handlers.Interfaces;
@@ -54,6 +55,20 @@ public class AccountService : IAccountService
     public async Task DeleteAccount(Guid userId)
     {
         await _authHandler.DeleteUserWithTrades(userId);
+    }
+
+    public async Task<PlanResponse> GetPlan(Guid userId)
+    {
+        User user = await _authHandler.GetUserById(userId);
+        if (user == null)
+            throw new ArgumentException($"User with id {userId} does not exist");
+
+        return new PlanResponse
+        {
+            IsPro = user.IsPro ?? false,
+            TradesThisMonth = user.TradesThisMonth,
+            TradeLimit = 25
+        };
     }
 
     private static string HashPassword(string password)
