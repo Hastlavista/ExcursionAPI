@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlueDragon.Excursion.DatabaseMigration")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9d2602b8694b64d0c70a3feaed1d03556caca4b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ea49903dbbf9f03f9082a96a776b2edbd7c799c")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlueDragon.Excursion.DatabaseMigration")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlueDragon.Excursion.DatabaseMigration")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

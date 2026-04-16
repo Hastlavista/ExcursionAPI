@@ -35,7 +35,7 @@ public class TradeHandler : ITradeHandler
             user.TradesResetDate = today;
         }
 
-        if (user.IsPro != true && user.TradesThisMonth >= 25)
+        if (user.IsPro != true && user.TradesThisMonth >= PlanConstants.MonthlyTradeLimit)
             throw new TradeLimitExceededException();
 
         user.TradesThisMonth++;

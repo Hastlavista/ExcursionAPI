@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlueDragon.Excursion.Core.DTOs.Auth;
 using BlueDragon.Excursion.Core.Interfaces;
-using BlueDragon.Excursion.Core.Interfaces;
+using BlueDragon.Excursion.Core.Shared;
 using BlueDragon.Excursion.Infrastructure.Domain.Models;
 using BlueDragon.Excursion.Infrastructure.Domain.Settings;
 using BlueDragon.Excursion.Infrastructure.Handlers.Interfaces;
@@ -67,7 +67,7 @@ public class AccountService : IAccountService
         {
             IsPro = user.IsPro ?? false,
             TradesThisMonth = user.TradesThisMonth,
-            TradeLimit = 25
+            TradeLimit = PlanConstants.MonthlyTradeLimit
         };
     }
 
