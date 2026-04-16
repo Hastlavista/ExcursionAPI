@@ -30,6 +30,16 @@ public class DatabaseConfiguration
                     PreviewOnly = false,
                     Timeout = TimeSpan.FromSeconds(180)
                 }
+            },
+            {
+                "Production", new ConfigurationModel
+                {
+                    Database = "PostgreSQL",
+                    ConnectionString = @"Host=localhost;Database=logynqo;Password=CGO6PUb8mxWRmG8730nVM3Em;Username=logynqo_user",
+                    Description = "Production database",
+                    PreviewOnly = false,
+                    Timeout = TimeSpan.FromSeconds(180)
+                }
             }
         };
 
