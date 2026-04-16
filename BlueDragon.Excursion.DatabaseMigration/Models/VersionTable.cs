@@ -12,7 +12,7 @@ public class VersionTable : IVersionTableMetaData
     public string UniqueIndexName => "UC_Version";
     public virtual string AppliedOnColumnName => "applied_on";
     public virtual string DescriptionColumnName => "description";
-    public object ApplicationContext { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public bool OwnsSchema => false;
+    public object ApplicationContext { get; set; }
+    public bool OwnsSchema => true;
     public bool CreateWithPrimaryKey => false;
 }
