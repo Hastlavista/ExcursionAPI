@@ -8,7 +8,7 @@ namespace BlueDragon.Excursion.Infrastructure.Utils;
 
 public static class TradeUtils
 {
-    public static decimal? CalculateProfitPips(TradeDirection? direction, decimal? entryPrice, decimal? exitPrice)
+    public static decimal? CalculateProfitPoints(TradeDirection? direction, decimal? entryPrice, decimal? exitPrice)
     {
         if (direction == null || entryPrice == null || exitPrice == null)
             return null;

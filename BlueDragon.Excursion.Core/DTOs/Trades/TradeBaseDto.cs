@@ -15,7 +15,7 @@ public class TradeBaseDto
     public decimal? TakeProfit { get; set; }
     public decimal? LotSize { get; set; }
     public decimal? Profit { get; set; }
-    public decimal? ProfitPips { get; set; }
+    public decimal? ProfitPoints { get; set; }
     public decimal? Mae { get; set; }
     public decimal? Mfe { get; set; }
     public decimal? Efficiency { get; set; }

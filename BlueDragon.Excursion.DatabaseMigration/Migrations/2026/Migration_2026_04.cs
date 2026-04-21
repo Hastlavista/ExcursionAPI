@@ -44,3 +44,12 @@ public class AlterTradesEntryExitTimeToDateTimeOffset : ExcursionMigration
             .AlterColumn("exit_time").AsDateTimeOffset().Nullable();
     }
 }
+
+[DeveloperMigration(2026, 04, 21, Developer.SilvioHabazin, 0)]
+public class AlterTradesRenameProfitPipsToProfitPoints : ExcursionMigration
+{
+    public override void Up()
+    {
+        Rename.Column("profit_pips").OnTable(Tables.Trades).InSchema(Tables.Schemas.Excursion).To("profit_points");
+    }
+}

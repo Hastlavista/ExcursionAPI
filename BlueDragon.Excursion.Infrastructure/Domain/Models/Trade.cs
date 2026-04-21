@@ -44,8 +44,8 @@ public class Trade
     [Column("profit")]
     public decimal? Profit { get; set; }
 
-    [Column("profit_pips")]
-    public decimal? ProfitPips { get; set; }
+    [Column("profit_points")]
+    public decimal? ProfitPoints { get; set; }
 
     [Column("mae")]
     public decimal? Mae { get; set; }

@@ -68,8 +68,10 @@ public class TradeHandler : ITradeHandler
         if (existing == null)
             throw new ArgumentException($"Trade with id {update.Id} / external id {update.ExternalId} does not exist");
         
+        existing.EntryPrice = update.EntryPrice;
         existing.ExitPrice = update.ExitPrice;
         existing.ExitTime = update.ExitTime;
+        existing.LotSize = update.LotSize;
         existing.TakeProfit = update.TakeProfit;
         existing.StopLoss = update.StopLoss;
         existing.UpdatedAt = DateTimeOffset.UtcNow;
@@ -87,7 +89,7 @@ public class TradeHandler : ITradeHandler
 
         existing.ExitPrice = update.ExitPrice;
         existing.Profit = update.Profit;
-        existing.ProfitPips  = TradeUtils.CalculateProfitPips(existing.Direction, existing.EntryPrice, existing.ExitPrice);
+        existing.ProfitPoints  = TradeUtils.CalculateProfitPoints(existing.Direction, existing.EntryPrice, existing.ExitPrice);
         existing.Mae = TradeUtils.CalculateMae(existing.Direction, existing.EntryPrice, update.ChartData?.OhlcDataAfter?.Candles);
         existing.Mfe = TradeUtils.CalculateMfe(existing.Direction, existing.EntryPrice,  update.ChartData?.OhlcDataAfter?.Candles);
         existing.ChartData ??= new ChartData();
