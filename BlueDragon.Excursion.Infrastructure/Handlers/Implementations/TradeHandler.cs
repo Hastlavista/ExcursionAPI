@@ -87,7 +87,7 @@ public class TradeHandler : ITradeHandler
 
         existing.ExitPrice = update.ExitPrice;
         existing.Profit = update.Profit;
-        existing.ProfitPips  = TradeUtils.CalculateProfitPips(existing.Symbol, existing.Direction, existing.EntryPrice, existing.ExitPrice);
+        existing.ProfitPips  = TradeUtils.CalculateProfitPips(existing.Direction, existing.EntryPrice, existing.ExitPrice);
         existing.Mae = TradeUtils.CalculateMae(existing.Direction, existing.EntryPrice, update.ChartData?.OhlcDataAfter?.Candles);
         existing.Mfe = TradeUtils.CalculateMfe(existing.Direction, existing.EntryPrice,  update.ChartData?.OhlcDataAfter?.Candles);
         existing.ChartData ??= new ChartData();

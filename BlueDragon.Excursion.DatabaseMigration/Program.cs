@@ -20,9 +20,7 @@ class Program
             ShowHelp();
             return;
         }
-
-        Console.WriteLine($"Connecting to database: {dbConfiguration.Database}");
-        Console.WriteLine($"Connection string: {dbConfiguration.ConnectionString}");
+        
         IServiceProvider serviceProvider = ServiceProviderGenerator.GenerateMigrationServiceProvider(dbConfiguration);
         UpdateDatabase(serviceProvider);
     }

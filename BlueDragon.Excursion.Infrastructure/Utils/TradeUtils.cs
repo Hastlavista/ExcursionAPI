@@ -8,16 +8,14 @@ namespace BlueDragon.Excursion.Infrastructure.Utils;
 
 public static class TradeUtils
 {
-    public static decimal? CalculateProfitPips(string symbol, TradeDirection? direction, decimal? entryPrice, decimal? exitPrice)
+    public static decimal? CalculateProfitPips(TradeDirection? direction, decimal? entryPrice, decimal? exitPrice)
     {
-        if (direction == null || entryPrice == null || exitPrice == null) 
+        if (direction == null || entryPrice == null || exitPrice == null)
             return null;
-        
-        decimal? priceDiff = direction == TradeDirection.Buy
+
+        return direction == TradeDirection.Buy
             ? exitPrice - entryPrice
             : entryPrice - exitPrice;
-
-        return priceDiff * GetPipMultiplier(symbol);
     }
 
     public static decimal? CalculateMae(TradeDirection? direction, decimal? entryPrice, IList<Candle> candles)
@@ -60,11 +58,5 @@ public static class TradeUtils
 
         decimal efficiency = (profitInPrice / mfe.Value) * 100;
         return Math.Round(efficiency, 2);
-    }
-
-    private static int GetPipMultiplier(string symbol)
-    {
-        if (string.IsNullOrEmpty(symbol)) return 10000;
-        return symbol.Contains("JPY") ? 100 : 10000;
     }
 }
