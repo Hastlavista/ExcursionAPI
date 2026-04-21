@@ -68,6 +68,7 @@ public class TradeHandler : ITradeHandler
         if (existing == null)
             throw new ArgumentException($"Trade with id {update.Id} / external id {update.ExternalId} does not exist");
         
+        existing.ExternalId = update.ExternalId ?? existing.ExternalId;
         existing.EntryPrice = update.EntryPrice;
         existing.ExitPrice = update.ExitPrice;
         existing.ExitTime = update.ExitTime;
