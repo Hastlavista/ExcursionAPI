@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using BlueDragon.Excursion.Core.DTOs.Requests;
@@ -48,6 +47,11 @@ public class TradesController : Controller
         {
             return StatusCode(StatusCodes.Status402PaymentRequired, ex.Message);
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "OpenTrade failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPost]
@@ -59,8 +63,16 @@ public class TradesController : Controller
         if (!ModelState.IsValid)
             return BadRequest("model-invalid");
 
-        await _tradeService.CloseTrade(trade);
-        return Ok("Trade successfully closed!");
+        try
+        {
+            await _tradeService.CloseTrade(trade);
+            return Ok("Trade successfully closed!");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "CloseTrade failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPost]
@@ -89,8 +101,16 @@ public class TradesController : Controller
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public async Task<IActionResult> GetTrades()
     {
-        List<TradeBaseDto> trades = await _tradeService.GetTrades(User.GetUserId());
-        return Ok(trades);
+        try
+        {
+            List<TradeBaseDto> trades = await _tradeService.GetTrades(User.GetUserId());
+            return Ok(trades);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "GetTrades failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPost]
@@ -102,8 +122,16 @@ public class TradesController : Controller
         if (!ModelState.IsValid || request.Id == null)
             return BadRequest("model-invalid");
 
-        await _tradeService.UpdateScreenshots(request, User.GetUserId());
-        return Ok("Screenshot successfully updated!");
+        try
+        {
+            await _tradeService.UpdateScreenshots(request, User.GetUserId());
+            return Ok("Screenshot successfully updated!");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "UpdateScreenshots failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPost]
@@ -115,11 +143,19 @@ public class TradesController : Controller
         if (!ModelState.IsValid || request.Id == null)
             return BadRequest("model-invalid");
 
-        TradeDto trade = await _tradeService.GetTrade(request.Id.GetValueOrDefault(), User.GetUserId());
-        if (trade == null)
-            return NotFound();
+        try
+        {
+            TradeDto trade = await _tradeService.GetTrade(request.Id.GetValueOrDefault(), User.GetUserId());
+            if (trade == null)
+                return NotFound();
 
-        return Ok(trade);
+            return Ok(trade);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "GetTrade failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPost]
@@ -128,7 +164,15 @@ public class TradesController : Controller
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public async Task<IActionResult> DeleteTrade([FromBody] GuidIdRequest request)
     {
-        await _tradeService.DeleteTrade(request.Id.GetValueOrDefault(), User.GetUserId());
-        return Ok("trade-deleted-successfully");
+        try
+        {
+            await _tradeService.DeleteTrade(request.Id.GetValueOrDefault(), User.GetUserId());
+            return Ok("trade-deleted-successfully");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "DeleteTrade failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 }

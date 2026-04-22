@@ -1,8 +1,10 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using BlueDragon.Excursion.Core.DTOs.Auth;
 using BlueDragon.Excursion.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BlueDragon.Excursion.API.Controllers;
 
@@ -11,10 +13,12 @@ namespace BlueDragon.Excursion.API.Controllers;
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
+    private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, ILogger<AuthController> logger)
     {
         _authService = authService;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -26,11 +30,19 @@ public class AuthController : Controller
         if (!ModelState.IsValid)
             return BadRequest("model-invalid");
 
-        AuthResponse response = await _authService.Register(request);
-        if (response == null)
-            return Conflict("Email already in use!");
+        try
+        {
+            AuthResponse response = await _authService.Register(request);
+            if (response == null)
+                return Conflict("Email already in use!");
 
-        return Ok(response);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Register failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPost]
@@ -42,10 +54,18 @@ public class AuthController : Controller
         if (!ModelState.IsValid)
             return BadRequest("model-invalid");
 
-        AuthResponse response = await _authService.Login(request);
-        if (response == null)
-            return Unauthorized("Invalid email or password!");
+        try
+        {
+            AuthResponse response = await _authService.Login(request);
+            if (response == null)
+                return Unauthorized("Invalid email or password!");
 
-        return Ok(response);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Login failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 }
