@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlueDragon.Excursion.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d1cb73411db777214849d0961cd2a112b1b3776")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f80daceec315211c26c00fabec87636fe4889461")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlueDragon.Excursion.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlueDragon.Excursion.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

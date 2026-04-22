@@ -11,6 +11,7 @@ using BlueDragon.Excursion.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace BlueDragon.Excursion.API.Controllers;
 
@@ -20,10 +21,12 @@ namespace BlueDragon.Excursion.API.Controllers;
 public class TradesController : Controller
 {
     private readonly ITradeService _tradeService;
+    private readonly ILogger<TradesController> _logger;
 
-    public TradesController(ITradeService tradeService)
+    public TradesController(ITradeService tradeService, ILogger<TradesController> logger)
     {
         _tradeService = tradeService;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -69,8 +72,16 @@ public class TradesController : Controller
         if (!ModelState.IsValid)
             return BadRequest("model-invalid");
 
-        await _tradeService.UpdateTrade(request);
-        return Ok("Trade successfully updated!");
+        try
+        {
+            await _tradeService.UpdateTrade(request);
+            return Ok("Trade successfully updated!");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "UpdateTrade failed: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPost]
