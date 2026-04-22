@@ -64,10 +64,10 @@ public class TradeHandler : ITradeHandler
     public async Task UpdateTrade(Trade update)
     {
         await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        Trade existing = context.Trades.SingleOrDefault(t => update.ExternalId != null ? t.ExternalId == update.ExternalId : t.Id == update.Id);
+        Trade existing = context.Trades.SingleOrDefault(t => update.Id != null ? t.Id == update.Id : t.ExternalId == update.ExternalId);
         if (existing == null)
             throw new ArgumentException($"Trade with id {update.Id} / external id {update.ExternalId} does not exist");
-        
+
         existing.ExternalId = update.ExternalId ?? existing.ExternalId;
         existing.EntryPrice = update.EntryPrice;
         existing.ExitPrice = update.ExitPrice;
@@ -84,7 +84,7 @@ public class TradeHandler : ITradeHandler
     public async Task CloseTrade(Trade update)
     {
         await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        Trade existing = context.Trades.SingleOrDefault(t => update.ExternalId != null ? t.ExternalId == update.ExternalId : t.Id == update.Id);
+        Trade existing = context.Trades.SingleOrDefault(t => update.Id != null ? t.Id == update.Id : t.ExternalId == update.ExternalId);
         if (existing == null)
             throw new ArgumentException($"Trade with id {update.Id} / external id {update.ExternalId} does not exist");
 

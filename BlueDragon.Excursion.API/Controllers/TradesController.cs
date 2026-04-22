@@ -63,6 +63,9 @@ public class TradesController : Controller
         if (!ModelState.IsValid)
             return BadRequest("model-invalid");
 
+        if (trade.Id == null && trade.ExternalId == null)
+            return BadRequest("Id or ExternalId is required");
+
         try
         {
             await _tradeService.CloseTrade(trade);
@@ -83,6 +86,9 @@ public class TradesController : Controller
     {
         if (!ModelState.IsValid)
             return BadRequest("model-invalid");
+
+        if (request.Id == null && request.ExternalId == null)
+            return BadRequest("Id or ExternalId is required");
 
         try
         {
