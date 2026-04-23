@@ -53,3 +53,12 @@ public class AlterTradesRenameProfitPipsToProfitPoints : ExcursionMigration
         Rename.Column("profit_pips").OnTable(Tables.Trades).InSchema(Tables.Schemas.Excursion).To("profit_points");
     }
 }
+
+[DeveloperMigration(2026, 04, 23, Developer.SilvioHabazin, 0)]
+public class AlterTradesAddUniqueExternalId : ExcursionMigration
+{
+    public override void Up()
+    {
+        Execute.Sql("CREATE UNIQUE INDEX uq_trades_external_id ON excursion.trades (external_id) WHERE external_id IS NOT NULL;");
+    }
+}

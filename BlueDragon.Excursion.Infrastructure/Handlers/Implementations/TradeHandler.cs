@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlueDragon.Excursion.Core.Enums;
@@ -26,6 +25,13 @@ public class TradeHandler : ITradeHandler
     {
         await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
 
+        if (trade.ExternalId != null)
+        {
+            bool exists = await context.Trades.AnyAsync(t => t.ExternalId == trade.ExternalId);
+            if (exists)
+                return;
+        }
+
         User user = await context.Users.SingleOrDefaultAsync(u => u.Id == trade.UserId);
 
         DateTimeOffset today = DateTimeOffset.UtcNow;
@@ -49,32 +55,15 @@ public class TradeHandler : ITradeHandler
         await context.SaveChangesAsync();
     }
 
-    public async Task<Trade> GetTrade(Guid id, Guid userId)
-    {
-        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        return await context.Trades.SingleOrDefaultAsync(t => t.Id == id && t.UserId == userId);
-    }
-
-    public async Task<List<Trade>> GetTrades(Guid userId)
-    {
-        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        return await context.Trades.Where(t => t.UserId == userId).ToListAsync();
-    }
-
     public async Task UpdateTrade(Trade update)
     {
         await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        Trade existing = context.Trades.SingleOrDefault(t => update.Id != null ? t.Id == update.Id : t.ExternalId == update.ExternalId);
+        Trade existing = context.Trades.FirstOrDefault(t => t.ExternalId == update.ExternalId);
         if (existing == null)
-            throw new ArgumentException($"Trade with id {update.Id} / external id {update.ExternalId} does not exist");
+            throw new ArgumentException($"Trade with external id {update.ExternalId} does not exist");
 
-        existing.ExternalId = update.ExternalId ?? existing.ExternalId;
-        existing.EntryPrice = update.EntryPrice;
-        existing.ExitPrice = update.ExitPrice;
-        existing.ExitTime = update.ExitTime;
-        existing.LotSize = update.LotSize;
-        existing.TakeProfit = update.TakeProfit;
         existing.StopLoss = update.StopLoss;
+        existing.TakeProfit = update.TakeProfit;
         existing.UpdatedAt = DateTimeOffset.UtcNow;
 
         context.Trades.Update(existing);
@@ -84,22 +73,22 @@ public class TradeHandler : ITradeHandler
     public async Task CloseTrade(Trade update)
     {
         await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        Trade existing = context.Trades.SingleOrDefault(t => update.Id != null ? t.Id == update.Id : t.ExternalId == update.ExternalId);
+        Trade existing = context.Trades.FirstOrDefault(t => update.Id != null ? t.Id == update.Id : t.ExternalId == update.ExternalId);
         if (existing == null)
             throw new ArgumentException($"Trade with id {update.Id} / external id {update.ExternalId} does not exist");
 
         existing.ExitPrice = update.ExitPrice;
         existing.Profit = update.Profit;
-        existing.ProfitPoints  = TradeUtils.CalculateProfitPoints(existing.Direction, existing.EntryPrice, existing.ExitPrice);
+        existing.ExitTime = update.ExitTime;
+        existing.ProfitPoints = TradeUtils.CalculateProfitPoints(existing.Direction, existing.EntryPrice, existing.ExitPrice);
         existing.Mae = TradeUtils.CalculateMae(existing.Direction, existing.EntryPrice, update.ChartData?.OhlcDataAfter?.Candles);
-        existing.Mfe = TradeUtils.CalculateMfe(existing.Direction, existing.EntryPrice,  update.ChartData?.OhlcDataAfter?.Candles);
+        existing.Mfe = TradeUtils.CalculateMfe(existing.Direction, existing.EntryPrice, update.ChartData?.OhlcDataAfter?.Candles);
         existing.ChartData ??= new ChartData();
         existing.ChartData.OhlcDataAfter = update.ChartData?.OhlcDataAfter ?? existing.ChartData.OhlcDataAfter;
         existing.ChartData.ScreenshotUrlAfter = update.ChartData?.ScreenshotUrlAfter ?? existing.ChartData.ScreenshotUrlAfter;
         existing.ChartData.OhlcDataBefore = update.ChartData?.OhlcDataBefore ?? existing.ChartData.OhlcDataBefore;
         existing.ChartData.ScreenshotUrlBefore = update.ChartData?.ScreenshotUrlBefore ?? existing.ChartData.ScreenshotUrlBefore;
         existing.Efficiency = TradeUtils.CalculateEfficiency(existing.Mfe, existing.EntryPrice, existing.ExitPrice, existing.Direction);
-        existing.ExitTime = update.ExitTime;
         existing.Status = TradeStatus.Closed;
         existing.UpdatedAt = DateTimeOffset.UtcNow;
 
@@ -107,33 +96,6 @@ public class TradeHandler : ITradeHandler
             existing.DurationMinutes = (int)(existing.ExitTime.Value - existing.EntryTime.Value).TotalMinutes;
 
         context.Trades.Update(existing);
-        await context.SaveChangesAsync();
-    }
-
-    public async Task UpdateScreenshot(Guid tradeId, string screenshotBefore, string screenshotAfter, Guid userId)
-    {
-        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        Trade existing = context.Trades.SingleOrDefault(t => t.Id == tradeId && t.UserId == userId);
-        if (existing == null)
-            throw new ArgumentException($"Trade with id {tradeId} does not exist");
-
-        existing.ChartData ??= new ChartData();
-        existing.ChartData.ScreenshotUrlBefore = screenshotBefore ?? existing.ChartData.ScreenshotUrlBefore;
-        existing.ChartData.ScreenshotUrlAfter = screenshotAfter ?? existing.ChartData.ScreenshotUrlAfter;
-        existing.UpdatedAt = DateTimeOffset.UtcNow;
-
-        context.Trades.Update(existing);
-        await context.SaveChangesAsync();
-    }
-
-    public async Task DeleteTrade(Guid id, Guid userId)
-    {
-        await using DatabaseContext context = DatabaseContext.GenerateContext(_databaseSettings.ConnectionString);
-        Trade existing = context.Trades.SingleOrDefault(t => t.Id == id && t.UserId == userId);
-        if (existing == null)
-            throw new ArgumentException($"Trade with id {id} does not exist");
-
-        context.Trades.Remove(existing);
         await context.SaveChangesAsync();
     }
 }

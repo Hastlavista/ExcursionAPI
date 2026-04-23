@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using BlueDragon.Excursion.Core.DTOs.Requests;
 using BlueDragon.Excursion.Core.DTOs.Trades;
 using BlueDragon.Excursion.Core.Interfaces;
 using BlueDragon.Excursion.Infrastructure.Domain.Models;
@@ -33,31 +30,9 @@ public class TradeService : ITradeService
         await _tradeHandler.CloseTrade(tradeUpdate);
     }
 
-    public async Task<List<TradeBaseDto>> GetTrades(Guid userId)
-    {
-        List<Trade> trades = await _tradeHandler.GetTrades(userId);
-        return trades.Select(t => t.ToBaseDto()).ToList();
-    }
-
-    public async Task<TradeDto> GetTrade(Guid id, Guid userId)
-    {
-        Trade trade = await _tradeHandler.GetTrade(id, userId);
-        return trade.ToDto();
-    }
-
     public async Task UpdateTrade(TradeDto update)
     {
         Trade trade = update.ToDomain();
         await _tradeHandler.UpdateTrade(trade);
-    }
-
-    public async Task UpdateScreenshots(UpdateScreenshotsRequest request, Guid userId)
-    {
-        await _tradeHandler.UpdateScreenshot(request.Id.GetValueOrDefault(), request.ScreenshotBefore, request.ScreenshotAfter, userId);
-    }
-
-    public async Task DeleteTrade(Guid id, Guid userId)
-    {
-        await _tradeHandler.DeleteTrade(id, userId);
     }
 }

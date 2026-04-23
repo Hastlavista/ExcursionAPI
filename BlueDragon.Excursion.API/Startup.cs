@@ -95,6 +95,7 @@ public class Startup
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ITradeService, TradeService>();
+        services.AddScoped<IJournalService, JournalService>();
 
         #endregion
 
@@ -102,6 +103,7 @@ public class Startup
 
         services.AddSingleton<IAuthHandler, AuthHandler>();
         services.AddSingleton<ITradeHandler, TradeHandler>();
+        services.AddSingleton<IJournalHandler, JournalHandler>();
 
         #endregion
 
