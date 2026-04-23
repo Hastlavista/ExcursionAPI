@@ -62,3 +62,14 @@ public class AlterTradesAddUniqueExternalId : ExcursionMigration
         Execute.Sql("CREATE UNIQUE INDEX uq_trades_external_id ON excursion.trades (external_id) WHERE external_id IS NOT NULL;");
     }
 }
+
+[DeveloperMigration(2026, 04, 23, Developer.SilvioHabazin, 1)]
+public class AlterTradesProfitPointsPrecision : ExcursionMigration
+{
+    public override void Up()
+    {
+        Alter.Table(Tables.Trades)
+            .InSchema(Tables.Schemas.Excursion)
+            .AlterColumn("profit_points").AsDecimal().Nullable();
+    }
+}
