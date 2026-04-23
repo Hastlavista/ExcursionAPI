@@ -14,3 +14,5 @@ appsettings.*.json
 
 # Rider
 .idea/
+publish/
+sqlscript.sql
