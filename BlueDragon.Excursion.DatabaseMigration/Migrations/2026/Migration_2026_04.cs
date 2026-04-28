@@ -73,3 +73,18 @@ public class AlterTradesProfitPointsPrecision : ExcursionMigration
             .AlterColumn("profit_points").AsDecimal().Nullable();
     }
 }
+
+[DeveloperMigration(2026, 04, 28, Developer.SilvioHabazin, 0)]
+public class AlterUsersAddStripeColumns : ExcursionMigration
+{
+    public override void Up()
+    {
+        Alter.Table(Tables.Users)
+            .InSchema(Tables.Schemas.Excursion)
+            .AddColumn("stripe_customer_id").AsString().Nullable();
+
+        Alter.Table(Tables.Users)
+            .InSchema(Tables.Schemas.Excursion)
+            .AddColumn("stripe_subscription_id").AsString().Nullable();
+    }
+}

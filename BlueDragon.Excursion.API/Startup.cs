@@ -58,6 +58,8 @@ public class Startup
         JwtSettings jwtSettings = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
         services.AddSingleton(jwtSettings);
 
+        services.AddSingleton(Configuration.GetSection("StripeSettings").Get<StripeSettings>());
+
         #endregion
 
         #region Authentication
@@ -96,6 +98,7 @@ public class Startup
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ITradeService, TradeService>();
         services.AddScoped<IJournalService, JournalService>();
+        services.AddScoped<ISubscriptionService, SubscriptionService>();
 
         #endregion
 
@@ -104,6 +107,7 @@ public class Startup
         services.AddSingleton<IAuthHandler, AuthHandler>();
         services.AddSingleton<ITradeHandler, TradeHandler>();
         services.AddSingleton<IJournalHandler, JournalHandler>();
+        services.AddSingleton<ISubscriptionHandler, SubscriptionHandler>();
 
         #endregion
 
