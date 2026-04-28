@@ -16,3 +16,4 @@ appsettings.*.json
 .idea/
 publish/
 sqlscript.sql
+NuGet.Config
