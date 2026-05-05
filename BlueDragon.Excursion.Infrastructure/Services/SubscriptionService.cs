@@ -89,7 +89,7 @@ public class SubscriptionService : ISubscriptionService
 
     public async Task HandleWebhook(string payload, string stripeSignature)
     {
-        Event stripeEvent = EventUtility.ConstructEvent(payload, stripeSignature, _stripeSettings.WebhookSecret);
+        Event stripeEvent = EventUtility.ConstructEvent(payload, stripeSignature, _stripeSettings.WebhookSecret, throwOnApiVersionMismatch: false);
 
         switch (stripeEvent.Type)
         {

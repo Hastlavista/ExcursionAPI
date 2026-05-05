@@ -72,6 +72,7 @@ public class SubscriptionController : Controller
 
     [AllowAnonymous]
     [HttpPost]
+    [Route("/api/public/stripe/webhook")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> Webhook()
